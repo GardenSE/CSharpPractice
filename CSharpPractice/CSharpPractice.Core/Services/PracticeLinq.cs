@@ -19,14 +19,14 @@ namespace CSharpPractice.Core.Services
         /// <returns></returns>
         private IEnumerable<PostCodeModel> GeneratePostCodeData()
         {
-            List<PostCodeModel>list = new List<PostCodeModel>();
+            List<PostCodeModel> list = new List<PostCodeModel>();
 
             list.Add(new PostCodeModel
             {
-                LocalGovernmentCode = "01219", 
-                PostCode = "0940031", 
-                PrefectureName = "北海道", 
-                CityName = "紋別市", 
+                LocalGovernmentCode = "01219",
+                PostCode = "0940031",
+                PrefectureName = "北海道",
+                CityName = "紋別市",
                 TownAreaName = "海洋公園",
             });
 
@@ -67,7 +67,7 @@ namespace CSharpPractice.Core.Services
                 PrefectureName = "北海道",
                 CityName = "留萌市",
                 TownAreaName = "潮静",
-                HasChoume = 1, 
+                HasChoume = 1,
                 HasMultipleTownArea = 1,
             });
 
@@ -79,7 +79,7 @@ namespace CSharpPractice.Core.Services
                 CityName = "泉佐野市",
                 TownAreaName = "新家",
                 HasChoume = 1,
-                UpdateStatus = 1, 
+                UpdateStatus = 1,
                 UpdateReason = 2,
             });
 
@@ -144,7 +144,7 @@ namespace CSharpPractice.Core.Services
             foreach (var item in list)
             {
                 Console.WriteLine($"{item.LocalGovernmentCode}, {item.PostCode}, " +
-                    $"{item.PrefectureName}, {item.CityName}, {item.TownAreaName}, " + 
+                    $"{item.PrefectureName}, {item.CityName}, {item.TownAreaName}, " +
                     $"{item.IsPartOfTownArea}, {item.HasKoaza}, {item.HasChoume}, {item.HasMultipleTownArea}");
             }
         }
@@ -175,22 +175,51 @@ namespace CSharpPractice.Core.Services
         #region <CountGovernmentCodeFromPostData : 郵便番号データから地方自治体コードごとに件数をカウントする>
         public void CountGovernmentCodeFromPostData()
         {
-           var result = GeneratePostCodeData()
-                             .GroupBy(p => p.LocalGovernmentCode)
-                             .Select(p => new
-                             {
-                                 LocalGovernmentCode = p.Key, 
-                                 PrefectureName = p.First().PrefectureName, 
-                                 CountNum = p.Count()
-                             })
-                             .OrderBy(p => p.LocalGovernmentCode);
+            /* ラムダ式の引数名
+             * p = 元データ（PostCodeModel
+             * g = グループ
+             * x = 集計結果
+             */
+            var result = GeneratePostCodeData()
+                              .GroupBy(p => p.LocalGovernmentCode)
+                              .Select(g => new
+                              {
+                                  LocalGovernmentCode = g.Key,
+                                  PrefectureName = g.First().PrefectureName,
+                                  CountNum = g.Count()
+                              })
+                              .OrderBy(x => x.LocalGovernmentCode);
 
             Console.WriteLine($"{Environment.NewLine}郵便番号データから地方自治体コードごとに件数をカウントする");
 
-            foreach(var item in result)
+            foreach (var item in result)
             {
                 Console.WriteLine($"{item.LocalGovernmentCode}, {item.PrefectureName}, {item.CountNum}");
             }
+        }
+        #endregion
+
+        #region <CountGovernmentCodeFromPostDataByQuery : 郵便番号データから地方自治体コードごとに件数をカウントする（クエリ構文）>
+        public void CountGovernmentCodeFromPostDataByQuery()
+        {
+            var result = from p in GeneratePostCodeData()
+                         orderby p.LocalGovernmentCode
+                         group p by p.LocalGovernmentCode into g
+                         select new
+                         {
+                             LocalGovernmentCode = g.Key,
+                             PrefectureName = g.First().PrefectureName,
+                             CountNum = g.Count(),
+                         }
+                         ;
+
+            Console.WriteLine($"{Environment.NewLine}郵便番号データから地方自治体コードごとに件数をカウントする（クエリ構文）");
+
+            foreach (var item in result)
+            {
+                Console.WriteLine($"{item.LocalGovernmentCode}, {item.PrefectureName}, {item.CountNum}");
+            }
+
         }
         #endregion
     }
