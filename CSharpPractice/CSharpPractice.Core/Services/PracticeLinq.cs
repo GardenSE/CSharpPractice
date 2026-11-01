@@ -125,6 +125,51 @@ namespace CSharpPractice.Core.Services
                 TownAreaName = "東藻琴（その他）",
             });
 
+            list.Add(new PostCodeModel
+            {
+                LocalGovernmentCode = "02208",
+                PostCode = "0350094",
+                PrefectureName = "青森県",
+                CityName = "むつ市",
+                TownAreaName = "桜木町",
+            });
+
+            list.Add(new PostCodeModel
+            {
+                LocalGovernmentCode = "02208",
+                PostCode = "0350021",
+                PrefectureName = "青森県",
+                CityName = "むつ市",
+                TownAreaName = "田名部",
+            });
+
+            list.Add(new PostCodeModel
+            {
+                LocalGovernmentCode = "02423",
+                PostCode = "0394601",
+                PrefectureName = "青森県",
+                CityName = "下北郡大間町",
+                TownAreaName = "大間",
+            });
+
+            list.Add(new PostCodeModel
+            {
+                LocalGovernmentCode = "02424",
+                PostCode = "0350111",
+                PrefectureName = "青森県",
+                CityName = "下北郡東通村",
+                TownAreaName = "尻屋",
+            });
+
+            list.Add(new PostCodeModel
+            {
+                LocalGovernmentCode = "02206",
+                PostCode = "0340301",
+                PrefectureName = "青森県",
+                CityName = "十和田市",
+                TownAreaName = "奥瀬（その他）",
+            });
+
             return list.AsEnumerable();
         }
         #endregion
@@ -246,6 +291,31 @@ namespace CSharpPractice.Core.Services
                             .OrderByDescending(x => x.PrefectureName);
 
             Console.WriteLine($"{Environment.NewLine}郵便番号データから都道府県ごとに郵便番号の件数をカウントし、件数の降順に並べる");
+
+            foreach (var item in result)
+            {
+                Console.WriteLine($"{item.PrefectureName}, {item.CountNum}");
+            }
+        }
+        #endregion
+
+        #region <CountPostCodeFromPrefecturesOverFive : 都道府県ごとの郵便番号データ件数を集計し、5件以上の都道府県を降順で表示する>
+        /// <summary>
+        /// 都道府県ごとの郵便番号データ件数を集計し、5件以上の都道府県を降順で表示する
+        /// </summary>
+        public void CountPostCodeFromPrefecturesOverFive()
+        {
+            var result = GeneratePostCodeData()
+                            .GroupBy(p => p.PrefectureName)
+                            .Select(g => new
+                            {
+                                PrefectureName = g.Key,
+                                CountNum = g.Count(),
+                            })
+                            .Where(p => p.CountNum >= 5)
+                            .OrderByDescending(x => x.CountNum);
+
+            Console.WriteLine($"{Environment.NewLine}郵便番号データから都道府県ごとに郵便番号の件数をカウントし、5件以上の都道府県を降順に並べる");
 
             foreach (var item in result)
             {
