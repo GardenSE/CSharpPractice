@@ -18,6 +18,7 @@ namespace CSharpPractice.ConsoleUI
 1-2:LINQ（２）メソッド構文
 1-3:LINQ（３）集計（メソッド構文）
 1-4:LINQ（４）集計（クエリ構文）
+1-5:LINQ（５）集計と並び替え（メソッド構文）
 ---------------------------------------------------------
 ※終了する場合は、メニュー番号以外のキーを押してください
 ");
@@ -44,6 +45,11 @@ namespace CSharpPractice.ConsoleUI
                     case "1-4":
                         PracticeLinq serviceLinq4 = new PracticeLinq();
                         serviceLinq4.CountGovernmentCodeFromPostDataByQuery();
+                        break;
+
+                    case "1-5":
+                        PracticeLinq serviceLinq5 = new PracticeLinq();
+                        serviceLinq5.CountPostCodeFromPrefectures();
                         break;
 
                     default:
