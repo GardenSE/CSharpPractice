@@ -323,5 +323,27 @@ namespace CSharpPractice.Core.Services
             }
         }
         #endregion
+
+        #region <GetPrefectureLimitDESC : 郵便番号を都道府県別に集計し、指定した下限以上を降順に並べる>
+        public void GetPrefectureLimitDESC(int lowerLimit)
+        {
+            var result = GeneratePostCodeData()
+                            .GroupBy(p => new {p.PrefectureName})
+                            .Select(g => new 
+                            {
+                                PrefectureName = g.Key,
+                                CountNum = g.Count(),
+                            })
+                            .Where(p => p.CountNum >= lowerLimit)
+                            .OrderByDescending(x => x.CountNum);
+
+            Console.WriteLine($"{Environment.NewLine}郵便番号データから都道府県ごとに郵便番号の件数をカウントし、指定した件数以上の都道府県を降順に並べる");
+
+            foreach (var item in result) 
+            {
+                Console.WriteLine($"{item.PrefectureName}, {item.CountNum}");
+            }
+        }
+        #endregion
     }
 }

@@ -20,6 +20,7 @@ namespace CSharpPractice.ConsoleUI
 1-4:LINQ（４）集計（クエリ構文）
 1-5:LINQ（５）集計と並び替え（メソッド構文）
 1-6:LINQ（６）集計・並び替え・抽出条件（メソッド構文）
+1-7:LINQ（７）集計・並び替え・抽出条件（メソッド構文）
 ---------------------------------------------------------
 ※終了する場合は、メニュー番号以外のキーを押してください
 ");
@@ -56,6 +57,11 @@ namespace CSharpPractice.ConsoleUI
                     case "1-6":
                         PracticeLinq serviceLinq6 = new PracticeLinq();
                         serviceLinq6.CountPostCodeFromPrefecturesOverFive();
+                        break;
+
+                    case "1-7":
+                        PracticeLinq serviceLinq7 = new PracticeLinq();
+                        serviceLinq7.GetPrefectureLimitDESC(2);
                         break;
 
                     default:
